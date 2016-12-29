@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\APIClient.cs" />
+    <Compile Include="Common\ContextStore.cs" />
     <Compile Include="Controller\CarWashingSrv.cs" />
     <Compile Include="Controller\IntentSrv.cs" />
     <Compile Include="Controller\ClothSrv.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Data\DateOffsetInfo.cs" />
     <Compile Include="Data\ExtractorRuleInfo.cs" />
     <Compile Include="Data\LUInfo.cs" />
+    <Compile Include="Data\WBContext.cs" />
     <Compile Include="LUEngines\LUController.cs" />
     <Compile Include="LUEngines\Luis\LuisClient.cs" />
     <Compile Include="LUEngines\Luis\QueryResult.cs" />
@@ -86,6 +88,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Res\Preprocess_replacewords.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Res\SeniverseKey.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

@@ -146,7 +146,7 @@ namespace WeatherBot.Engine.Test
 
             //En2EndTest("明早天气");
 
-            End2EndTestForFile("D:\\WsBotServer\\OfficialAccountBotServing\\KickOffBot.Engine\\WeatherBot.Engine.Text\\files\\test1.txt", "D:\\WsBotServer\\OfficialAccountBotServing\\KickOffBot.Engine\\WeatherBot.Engine.Text\\files\\output1.txt");
+            End2EndTestForFile("D:\\Github\\WeatherBot\\WeatherBot\\WeatherBot.Engine.Test\\files\\test1.txt", "D:\\Github\\WeatherBot\\WeatherBot\\WeatherBot.Engine.Test\\files\\output1.txt");
 
             Console.WriteLine("Finished!");
         }

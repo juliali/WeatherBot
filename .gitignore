@@ -254,3 +254,14 @@ paket-files/
 
 # CodeRush
 .cr/
+
+# Key file
+WeatherBot/WeatherBot.Engine/Res/SeniverseKey.txt
+
+# Useless files
+
+WeatherBot/WBService/Service References/
+WeatherBot/WBService/Web.Debug.config
+WeatherBot/WBService/Web.Release.config
+WeatherBot/WeatherBot.Engine.Test/files/output1.txt
+WeatherBot/WeatherBot.Engine.Test/files/output1_2.txt

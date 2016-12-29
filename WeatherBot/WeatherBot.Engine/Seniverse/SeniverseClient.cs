@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeatherBot.Engine.Common;
+using WeatherBot.Engine.Utils;
 
 namespace WeatherBot.Engine.Seniverse
 {
     public abstract  class SeniverseClient
     {
         protected readonly APIClient client = new APIClient();
-        protected string key = "movddqf7o9gtvq8p";
+        protected static string key = FileUtils.ReadEmbeddedResourceFile("WeatherBot.Engine.Res.SeniverseKey.txt");
 
         protected string GetResponseText(dynamic jsonObj, string[] fieldsToDisplay, string[] ResponseTemplate)
         {

@@ -13,11 +13,11 @@ namespace WeatherBot.Engine.LUEngines
     {
         private LuisClient luisClient = new LuisClient();
         
-        private RulebasedExtractor LocationExtractor = new RulebasedExtractor("WeatherBot.Res.ChineseCities.txt");
+        private RulebasedExtractor LocationExtractor = new RulebasedExtractor("WeatherBot.Engine.Res.ChineseCities.txt");
 
-        private RulebasedIntentClassifier LocationIC = new RulebasedIntentClassifier("WeatherBot.Res.IntentRules.txt");
+        private RulebasedIntentClassifier LocationIC = new RulebasedIntentClassifier("WeatherBot.Engine.Res.IntentRules.txt");
 
-        private RulebasedPreprocessor preprocessor = new RulebasedPreprocessor("WeatherBot.Res.Preprocess_replacewords.txt");
+        private RulebasedPreprocessor preprocessor = new RulebasedPreprocessor("WeatherBot.Engine.Res.Preprocess_replacewords.txt");
         public LUInfo Understand(string utterance)
         {
             string newUtterance = preprocessor.Preprocess(utterance);

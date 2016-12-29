@@ -1,0 +1,5 @@
+﻿洗车|清洗车辆|车辆清洗	CarWashing
+雾霾|空气质量|[Pp][Mm]2[\.]{0-1}5|可吸入颗粒物	Smog
+限行|限号|尾号	RestrictedDriving
+天气|气温|下雨|下雪	Weather
+穿衣|衣服|大衣|秋裤|毛衣|毛裤|保暖内衣	Cloth

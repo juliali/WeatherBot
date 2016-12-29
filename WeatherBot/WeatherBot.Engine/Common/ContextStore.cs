@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeatherBot.Engine.Data;
 
 namespace WeatherBot.Engine.Common
@@ -32,26 +29,23 @@ namespace WeatherBot.Engine.Common
 
         public WBContext GetContext(string userId)
         {
+            // If userId is null, set a uniq id for each uatterance.
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                userId = DateTime.Now.Ticks.ToString(); 
+            }
+
             if (contextMap.ContainsKey(userId))
             {
                 return contextMap[userId];
             }
             else
-            {
-                return null;
-            }
-        }
+            {                
+                WBContext newContext = new WBContext(userId);
+                contextMap.Add(userId, newContext);
 
-        public void SetContext(string userId, WBContext context)
-        {
-            if (contextMap.ContainsKey(userId))
-            {
-                contextMap[userId] = context;
+                return newContext;
             }
-            else
-            {
-                contextMap.Add(userId, context);
-            }
-        }
+        }       
     }
 }

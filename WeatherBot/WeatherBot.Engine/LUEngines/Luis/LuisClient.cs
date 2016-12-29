@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 using System.Web;
 using WeatherBot.Engine.Common;
 using WeatherBot.Engine.Data;
@@ -12,8 +8,8 @@ namespace WeatherBot.Engine.LUEngine.Luis
 {
     public class LuisClient
     {
-        private readonly string DefaultAppId = "b935ef33-ebea-489f-82d9-c69e5bca4a26";
-        private readonly string DefaultSubscriptionKey = "8150ce0230174de6960e94f92a1d6f2b";
+        private readonly string DefaultAppId = ConfigurationManager.AppSettings["LuisAppId"];
+        private readonly string DefaultSubscriptionKey = ConfigurationManager.AppSettings["LuisSubscription"];
 
         private readonly APIClient client = new APIClient();
         private string rootURL = "https://api.projectoxford.ai/luis/v1/application";

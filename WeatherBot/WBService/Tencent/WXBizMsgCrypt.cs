@@ -122,15 +122,7 @@ namespace WBService.Tencent
 ///            if (0 != ret)
 ///                return ret;
             sEncryptMsg = "";
-
-            /*
-             <ToUserName><![CDATA[粉丝号]]></ToUserName>
-<FromUserName><![CDATA[公众号]]></FromUserName>
-<CreateTime>1460541339</CreateTime>
-<MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA[test]]></Content>
-             */
-
+            
             string ToUserNameLabelHead = "<ToUserName><![CDATA[";
             string ToUserNameLabelTail = "]]></ToUserName>";
 
@@ -203,12 +195,6 @@ namespace WBService.Tencent
             {
                 raw += AL[i];
             }
-
-           /* Utils.Utils.Log("sToken: " + sToken);
-            Utils.Utils.Log("sTimeStamp: " + sTimeStamp);
-            Utils.Utils.Log("sNonce: " + sNonce);
-            Utils.Utils.Log("sMsgEncrypt: " + sMsgEncrypt);
-            Utils.Utils.Log("Sorted Strings: " + raw);*/
                            
             SHA1 sha;
             ASCIIEncoding enc;

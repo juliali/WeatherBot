@@ -27,6 +27,7 @@ namespace WBService.Data
         public string Content { get; set; } = "";
     }
     
+    /*
     public class RichMsg
     {
         public string Title { get; set; }
@@ -306,4 +307,5 @@ namespace WBService.Data
             return Root.OuterXml;
         }
     }
+    */
 }

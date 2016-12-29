@@ -35,6 +35,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -71,7 +72,7 @@
     <Compile Include="Seniverse\SeniverseSmogClient.cs" />
     <Compile Include="Seniverse\SeniverseWeatherClient.cs" />
     <Compile Include="Utils\FileUtils.cs" />
-    <Compile Include="Utils\LuisUtils.cs" />
+    <Compile Include="Utils\DatetimeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Res\ChineseCities.txt">
@@ -93,6 +94,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Res\SeniverseKey.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Res\LuisAppId.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Res\LuisSubscription.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

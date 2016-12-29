@@ -9,15 +9,14 @@ namespace WeatherBot.Engine.Controller
     {
         private SeniverseSmogClient client = new SeniverseSmogClient();
 
-        public override string GetAnswer(LUInfo luInfo)
+        public override string GetAnswer(WBContext context, LUInfo luInfo)
         {
-            string response = LuisUtils.GetOutofScopeAnswer();
+            string response = DatetimeUtils.GetOutofScopeAnswer();
 
-            string location = LuisUtils.GetLocation(luInfo);
+            string location = context.Location;
+            TimeRange range = context.timeRange;
 
-            TimeRange range = LuisUtils.GetTimeRange(luInfo);
-
-            List<string> stations = LuisUtils.GetEntity(luInfo, "Station");
+            List<string> stations = DatetimeUtils.GetEntity(luInfo, "Station");
 
             string station = null;
 

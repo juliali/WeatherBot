@@ -12,7 +12,6 @@ namespace WeatherBot.Engine.Common
     {
         public string Query(string completeURL)
         {
-           // string completeURL = Common.WebRequestAsync(string.Format(this.url, HttpUtility.UrlEncode(Utterance))).Result;
             //创建post请求
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(completeURL);
             request.Method = "GET";

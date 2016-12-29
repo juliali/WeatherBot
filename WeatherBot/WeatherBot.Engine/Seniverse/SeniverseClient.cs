@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace WeatherBot.Engine.Seniverse
     public abstract  class SeniverseClient
     {
         protected readonly APIClient client = new APIClient();
-        protected static string key = FileUtils.ReadEmbeddedResourceFile("WeatherBot.Engine.Res.SeniverseKey.txt");
+        protected static string key = ConfigurationManager.AppSettings["SeniverseKey"];
 
         protected string GetResponseText(dynamic jsonObj, string[] fieldsToDisplay, string[] ResponseTemplate)
         {

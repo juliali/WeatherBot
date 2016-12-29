@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WeatherBot.Engine.Data;
+﻿using WeatherBot.Engine.Data;
 using WeatherBot.Engine.Seniverse;
 using WeatherBot.Engine.Utils;
 
@@ -13,13 +8,12 @@ namespace WeatherBot.Engine.Controller
     {
         private SeniverseRestrictedDrivingClient client = new SeniverseRestrictedDrivingClient();
 
-        public override string GetAnswer(LUInfo luInfo)
+        public override string GetAnswer(WBContext context, LUInfo luInfo)
         {
-            string response = LuisUtils.GetOutofScopeAnswer();
+            string response = DatetimeUtils.GetOutofScopeAnswer();
 
-            string location = LuisUtils.GetLocation(luInfo);
-
-            TimeRange range = LuisUtils.GetTimeRange(luInfo);
+            string location = context.Location;
+            TimeRange range = context.timeRange;
 
             if (range == null)
             {

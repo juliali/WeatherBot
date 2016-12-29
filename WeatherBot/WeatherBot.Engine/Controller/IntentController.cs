@@ -1,72 +1,123 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WeatherBot.Engine.Common;
 using WeatherBot.Engine.Data;
-using WeatherBot.Engine.LUEngine.Luis;
 using WeatherBot.Engine.LUEngines;
-using WeatherBot.Engine.LUEngines.RulebasedEngine;
 using WeatherBot.Engine.Utils;
 
 namespace WeatherBot.Engine.Controller
 {
     public class IntentController
     {
-        private IntentSrv srv;
+        private List<IntentSrv> srvs;
         private LUController luController = new LUController();
-       
+        private ContextStore contextStore = ContextStore.Instance;
+
+        private readonly HashSet<string> ValidIntent = new HashSet<string> {"Weather", "Smog", "DefaultIntent", "CarWashing", "RestrictedDriving", "Cloth" };
 
         public IntentController()
         {
-
+            this.srvs = new List<IntentSrv>();
         }
 
-        private string GetDefaultIntentResponse(LUInfo luinfo)
+        private void initContext(ref WBContext context, LUInfo luinfo, string utterance)
         {
-            WeatherSrv weatherSrv = new WeatherSrv();
-            SmogSrv smogSrv = new SmogSrv();
+            string intent = luinfo.Intent.intent;
+            if ((IsLocationOnly(luinfo, utterance))
+                || ContainsLocationDateOnly(luinfo, utterance))
+            {
+                intent = "DefaultIntent";
+            }
+            
+            string location = DatetimeUtils.GetLocation(luinfo);
+            TimeRange range = DatetimeUtils.GetTimeRange(luinfo);
 
-            string resp = weatherSrv.GetAnswer(luinfo);
-            resp += "\r\n" + smogSrv.GetAnswer(luinfo);
+            context.Intent = intent;
+            context.Location = location;
+            context.timeRange = range;
 
-            return resp;
+            context.validTime = DateTime.Now;
         }
 
-        public string Answer(string utterance)
+        private void updateContext(ref WBContext context, LUInfo luinfo)
+        {
+            string intent = luinfo.Intent.intent;
+
+            if (!string.IsNullOrWhiteSpace(intent) && ValidIntent.Contains(intent))
+            {
+                context.Intent = intent;
+            }
+
+            string location = DatetimeUtils.GetLocation(luinfo);
+
+            if (!string.IsNullOrWhiteSpace(location))
+            {
+                context.Location = location;
+            }
+
+            TimeRange range = DatetimeUtils.GetTimeRange(luinfo);
+
+            if (range != null)
+            {
+                context.timeRange = range;
+            }
+        }
+
+        public string Answer(string userId, string utterance)
         {            
             LUInfo luinfo = this.luController.Understand(utterance);
 
-            string location = LuisUtils.GetLocation(luinfo);
-
-            if ((IsLocationOnly(location, utterance))
-                || ContainsLocationDateOnly(luinfo, utterance))
+            WBContext context = contextStore.GetContext(userId);
+            
+            
+            if (!context.IsValid())
             {
-                return GetDefaultIntentResponse(luinfo);
+                initContext(ref context, luinfo, utterance);
             }
-
-            switch(luinfo.Intent.intent)
+            else
             {
-                case "CarWashing":
-                    this.srv = new CarWashingSrv();
+                updateContext(ref context, luinfo);
+            }
+                        
+            switch(context.Intent)
+            {
+                case "DefaultIntent":
+                    this.srvs.Add(new WeatherSrv());
+                    this.srvs.Add(new SmogSrv());
                     break;
-                case "Weather": 
-                    this.srv = new WeatherSrv();
+                case "CarWashing":
+                    this.srvs.Add(new CarWashingSrv());
+                    break;
+                case "Weather":
+                    this.srvs.Add(new WeatherSrv());
                     break;
                 case "Smog":
-                    this.srv = new SmogSrv();
+                    this.srvs.Add(new SmogSrv());
                     break;
                 case "RestrictedDriving":
-                    this.srv = new RestrictedDrivingSrv();
+                    this.srvs.Add(new RestrictedDrivingSrv());
                     break;
                 case "Cloth":
-                    this.srv = new ClothSrv();
+                    this.srvs.Add(new ClothSrv());
                     break;
-                default:                     
-                    return LuisUtils.GetOutofScopeAnswer();                    
+                default:
+                    break;                                   
             }
 
-            string answer = this.srv.GetAnswer(luinfo);
+            string answer = "";
+
+            foreach(IntentSrv srv in this.srvs)
+            { 
+                string singleAnswer = srv.GetAnswer(context, luinfo);
+                answer += singleAnswer;
+            }
+
+            this.srvs.Clear();
+
+            if (string.IsNullOrWhiteSpace(answer))
+            {
+                answer = DatetimeUtils.GetOutofScopeAnswer();
+            }
 
             return answer;
         }
@@ -125,8 +176,10 @@ namespace WeatherBot.Engine.Controller
 
         }
 
-        private bool IsLocationOnly(string location, string utterance)
+        private bool IsLocationOnly(LUInfo luinfo, string utterance)
         {
+            string location = DatetimeUtils.GetLocation(luinfo);
+
             if (string.IsNullOrWhiteSpace(location))
             {
                 return false;

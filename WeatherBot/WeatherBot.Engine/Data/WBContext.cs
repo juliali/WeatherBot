@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WeatherBot.Engine.Utils;
 
 namespace WeatherBot.Engine.Data
 {
@@ -13,12 +12,10 @@ namespace WeatherBot.Engine.Data
 
         public string Intent;
         public string Location;
-        public DateTime startDate;
-        public DateTime endDate;
+        public TimeRange timeRange;        
 
-        public WBContext(string timestr, string userId)
-        {
-            this.validTime = DateTime.Parse(timestr);
+        public WBContext(string userId)
+        {            
             this.userId = userId;
         }
 
@@ -26,7 +23,15 @@ namespace WeatherBot.Engine.Data
         {
             DateTime nowTime = DateTime.Now;
 
-            if (nowTime.Subtract(validTime).TotalMinutes > 30)
+            if (validTime == null)
+            {
+                return false;
+            }
+            else if (nowTime.Subtract(validTime).TotalMinutes > 30)
+            {
+                return false;
+            }
+            else if (string.IsNullOrWhiteSpace(Location))
             {
                 return false;
             }
@@ -34,6 +39,6 @@ namespace WeatherBot.Engine.Data
             {
                 return true;
             }
-        }
+        }                
     }
 }

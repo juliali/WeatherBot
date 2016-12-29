@@ -112,6 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <EmbeddedResource Include="Res\WechatAppId.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +137,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Service References\Application Insights\ConnectedService.json" />
+    <Content Include="App.config" />
     <None Include="Properties\PublishProfiles\weatherbotservice - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

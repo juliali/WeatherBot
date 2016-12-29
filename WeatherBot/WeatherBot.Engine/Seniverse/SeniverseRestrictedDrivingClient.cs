@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WeatherBot.Engine.Data;
-using WeatherBot.Engine.Utils;
 
 namespace WeatherBot.Engine.Seniverse
 {
@@ -15,10 +10,6 @@ namespace WeatherBot.Engine.Seniverse
 
         public string GetRestrictedNumber(string location, DateTime? startDate, DateTime? endDate)
         {
-          //  DateOffsetInfo dateoffset = FileUtils.GetDateOffset(startDate, endDate);
-          //  int start = dateoffset.start;
-          //  int len = dateoffset.len;
-
             string url = rootURL + "/driving_restriction.json?key={0}&location={1}";
             string completedURL = string.Format(url, key, location);
 

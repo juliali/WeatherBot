@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeatherBot.Engine.Data;
 using WeatherBot.Engine.Seniverse;
 using WeatherBot.Engine.Utils;
@@ -12,13 +8,12 @@ namespace WeatherBot.Engine.Controller
     public class ClothSrv : IntentSrv
     {
         private SeniverseLivingClient client = new SeniverseLivingClient();
-        public override string GetAnswer(LUInfo luInfo)
+        public override string GetAnswer(WBContext context, LUInfo luInfo)
         {
-            string location = LuisUtils.GetLocation(luInfo);
+            string location = context.Location;
+            TimeRange timeRange = context.timeRange;
 
-            DatePeriod datePeriod = LuisUtils.GetDatePeriod(luInfo);
-
-            if (datePeriod != null && DateTime.Parse(datePeriod.startDateStr) > DateTime.Now)
+            if (timeRange != null && timeRange.startDate > DateTime.Now)
             {
                 return "我们仅提供今天的穿衣指数";
             }

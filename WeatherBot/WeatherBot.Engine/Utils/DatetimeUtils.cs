@@ -7,7 +7,7 @@ using WeatherBot.Engine.Data;
 
 namespace WeatherBot.Engine.Utils
 {
-    public class LuisUtils
+    public class DatetimeUtils
     {
         public static DatePeriod ConvertDateArea(List<string> dateareas)
         {
@@ -49,9 +49,7 @@ namespace WeatherBot.Engine.Utils
         }
 
         private static string GetExactDateArea(DateTime today, string previousDateare, string currentDatearea)
-        {
-           // DateTime today = DateTime.Now.Date;
-
+        {           
             if (currentDatearea.StartsWith("XXXX-WXX-"))
             {
                 if (string.IsNullOrWhiteSpace(previousDateare))
@@ -126,9 +124,7 @@ namespace WeatherBot.Engine.Utils
             }
         }
         private static DatePeriod ConvertSingleDateArea(DateTime today, string datearea)
-        {
-            //DateTime today = DateTime.Now.Date;
-
+        {            
             if (string.IsNullOrWhiteSpace(datearea))
             {
                 return null;
@@ -445,14 +441,14 @@ namespace WeatherBot.Engine.Utils
         {
             List<string> dateareas = GetEntity(luInfo, "builtin.datetime.date");
 
-            return LuisUtils.ConvertDateArea(dateareas);
+            return DatetimeUtils.ConvertDateArea(dateareas);
         }
 
         public static TimePeriod GetTimePeriod(LUInfo luInfo)
         {
             List<string> timeareas = GetEntity(luInfo, "builtin.datetime.time");
 
-            return LuisUtils.ConvertTimeArea(timeareas);
+            return DatetimeUtils.ConvertTimeArea(timeareas);
         }
 
         public static List<string> GetEntity(LUInfo luInfo, string EntityType)

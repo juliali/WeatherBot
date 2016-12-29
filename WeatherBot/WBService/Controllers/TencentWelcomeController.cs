@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.Http;
 using System.Xml;
 using WBService.Data;
 using WBService.Exceptions;
 using WBService.Tencent;
-using WBService.Utils;
 using WeatherBot.Engine.Controller;
 using WeatherBot.Engine.Utils;
 
@@ -22,7 +16,7 @@ namespace WBService.Controllers
 {
     public class TencentWelcomeController : ApiController
     {
-        private readonly WXBizMsgCrypt wxcpt = new WXBizMsgCrypt(Constants.Token, Constants.EncodingAESKey, Constants.AppId);
+        private readonly WXBizMsgCrypt wxcpt = new WXBizMsgCrypt(Constants.Token, Constants.EncodingAESKey, ConfigurationManager.AppSettings["WechatAppId"]);
         private IntentController bot = new IntentController();
 
         public HttpResponseMessage Get(string signature = "",  string timestamp="", string nonce="", string echostr = "")
@@ -50,24 +44,7 @@ namespace WBService.Controllers
         }
 
         public HttpResponseMessage Post(HttpRequestMessage request)
-        {
-           /* var parameters = request.GetQueryNameValuePairs();
-
-            string paramstrs = string.Join("&",
-                parameters.ToDictionary(x => x.Key, x => x.Value));               
-
-            Utils.Utils.Log("[Post]:\r\n" + paramstrs);
-
-            string msg_signature = parameters.FirstOrDefault(pair => pair.Key == "signature").Value;
-            string timestamp = parameters.FirstOrDefault(pair => pair.Key == "timestamp").Value;
-            string nonce = parameters.FirstOrDefault(pair => pair.Key == "nonce").Value;
-            if (msg_signature == null || msg_signature.Length == 0 ||
-                timestamp == null || timestamp.Length == 0 ||
-                nonce == null || nonce.Length == 0)
-            {
-                throw new WebResponseException(HttpStatusCode.BadRequest, $"Missing necessary params: msg_signature - {msg_signature}, timestamp - {timestamp}, nonce - {nonce}");
-            }
-            */
+        {           
             try
             {
                 Request req = ParseRequest(request);
@@ -137,7 +114,7 @@ namespace WBService.Controllers
             if (req.MsgType == "text")
             {
                 DateTime startTime = DateTime.Now;
-                replyMsg = Answer(req.Content);
+                replyMsg = Answer(req.FromUserName, req.Content);
                 DateTime endTime = DateTime.Now;
 
                 TimeSpan latency = endTime.Subtract(startTime);
@@ -182,11 +159,11 @@ namespace WBService.Controllers
             return sEncryptMsg;
         }
 
-        private string Answer(string utterance)
+        private string Answer(string userId, string utterance)
         {
-            string answer = this.bot.Answer(utterance);
+            string answer = this.bot.Answer(userId, utterance);
 
-            if (string.IsNullOrWhiteSpace(answer) || answer.Contains(LuisUtils.GetOutofScopeAnswer()))
+            if (string.IsNullOrWhiteSpace(answer) || answer.Contains(DatetimeUtils.GetOutofScopeAnswer()))
             {
                 answer = Utils.Utils.GetDefaultAnswer();
             }
@@ -194,24 +171,11 @@ namespace WBService.Controllers
             return answer;
         }
 
-    }
-
-    public class Record
-    {
-        public string msg_signature { get; set; }
-        public string timestamp { get; set; }
-        public string nonce { get; set; }        
-        public string echostr { get; set; }
-        public int ret { get; set; }
-        public string echostr_decrypt { get; set; }
-    }
+    }    
 
     public class Constants
     {
-        public static string Token = /*Convert.ToBase64String(Encoding.ASCII.GetBytes(*/"20161222m75ddxxxy01abc"/*))*/; 
-        public static string EncodingAESKey = "YqVyCcqrNiOBUul6rESTyu6fazzD3caGYy0Fd1gDBSb";
-        public static string AppId = "wx3c10f06ab420e457";
-    }
-
-    
+        public static string Token = "20161222m75ddxxxy01abc"; 
+        public static string EncodingAESKey = "YqVyCcqrNiOBUul6rESTyu6fazzD3caGYy0Fd1gDBSb";        
+    }    
 }

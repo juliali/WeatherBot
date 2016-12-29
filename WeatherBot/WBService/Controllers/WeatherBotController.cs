@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
+﻿using System.Web.Http;
 using WeatherBot.Engine.Controller;
 
 namespace WBService.Controllers
@@ -12,10 +8,10 @@ namespace WBService.Controllers
         
         private IntentController bot = new IntentController();
 
-        // GET api/weatherbot?query={query}
-        public string Get([FromUri]string query)
+        // GET api/weatherbot?query={query}&userId={userId}
+        public string Get([FromUri]string query, [FromUri]string userId = null)
         {
-            string answer = bot.Answer(query);
+            string answer = bot.Answer(userId, query);
             return answer;
         }
     }

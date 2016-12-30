@@ -13,12 +13,12 @@ namespace WeatherBot.Engine.Controller
             string location = context.Location;
             TimeRange timeRange = context.timeRange;
 
+            string response = client.GetSuggestion(location, LifeSuggestionType.Cloth);
+
             if (timeRange != null && timeRange.startDate > DateTime.Now)
             {
-                return "我们仅提供今天的穿衣指数";
+                response += "\r\n我们仅提供今天的穿衣指数\r\n";
             }
-
-            string response = client.GetSuggestion(location, LifeSuggestionType.Cloth);
 
             return response;
         }

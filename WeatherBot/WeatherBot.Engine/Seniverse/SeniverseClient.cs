@@ -3,11 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeatherBot.Engine.Common;
-using WeatherBot.Engine.Utils;
 
 namespace WeatherBot.Engine.Seniverse
 {

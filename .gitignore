@@ -256,10 +256,8 @@ paket-files/
 .cr/
 
 # Key file
-WeatherBot/WeatherBot.Engine/Res/SeniverseKey.txt
-WeatherBot/WeatherBot.Engine/Res/LuisAppId.txt
-WeatherBot/WeatherBot.Engine/Res/LuisSubscription.txt
-WeatherBot/WBService/Res/WechatAppId.txt
+WeatherBot/WeatherBot.Engine.Test/App.config
+WeatherBot/WBService/Web.config
 
 # Useless files
 WeatherBot/WBService/Service References/

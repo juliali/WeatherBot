@@ -8,6 +8,7 @@ using System.Text;
 using System.Web;
 using System.Xml;
 using WBService.Data;
+using WeatherBot.Engine.Utils;
 
 namespace WBService.Tencent
 {
@@ -235,14 +236,14 @@ namespace WBService.Tencent
             }
             ret = VerifySignature(m_sToken, sTimeStamp, sNonce, "", sMsgSignature);
 
-            Utils.Utils.Log("VerifyURL Ret:" + ret.ToString());
+            LogUtils.Log("VerifyURL Ret:" + ret.ToString());
 
             if (0 != ret)
             {
                 return ret;
-            }            
+            }
 
-            Utils.Utils.Log("Successfully Verified!");
+            LogUtils.Log("Successfully Verified!");
             return 0;            
         }
     }

@@ -419,14 +419,21 @@ namespace WeatherBot.Engine.Utils
 
         public const string DefaultLocation = "北京";
 
-        public static string GetLocation(LUInfo luInfo)
+        public static string GetLocation(LUInfo luInfo, bool useDefault)
         {
             List<string> provices = GetEntity(luInfo, "Province");
             List<string> locations = GetEntity(luInfo, "Location");
 
             if (locations == null || locations.Count == 0)
             {
-                return DefaultLocation;
+                if (useDefault)
+                { 
+                    return DefaultLocation;
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             if (provices != null && provices.Count > 0)

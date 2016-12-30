@@ -28,7 +28,7 @@ namespace WeatherBot.Engine.Controller
                 response = client.GetPredictedWeatherHourly(location, range.startDate, range.endDate);
             }
 
-            return response;           
+            return response + "\r\n";           
         }
     }
 }

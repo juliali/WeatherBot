@@ -29,7 +29,7 @@ namespace WeatherBot.Engine.Controller
                 intent = "DefaultIntent";
             }
             
-            string location = DatetimeUtils.GetLocation(luinfo);
+            string location = DatetimeUtils.GetLocation(luinfo, true);
             TimeRange range = DatetimeUtils.GetTimeRange(luinfo);
 
             context.Intent = intent;
@@ -48,7 +48,7 @@ namespace WeatherBot.Engine.Controller
                 context.Intent = intent;
             }
 
-            string location = DatetimeUtils.GetLocation(luinfo);
+            string location = DatetimeUtils.GetLocation(luinfo, false);
 
             if (!string.IsNullOrWhiteSpace(location))
             {
@@ -106,6 +106,8 @@ namespace WeatherBot.Engine.Controller
 
             string answer = "";
 
+            DateTime startTime = DateTime.Now;
+
             foreach(IntentSrv srv in this.srvs)
             { 
                 string singleAnswer = srv.GetAnswer(context, luinfo);
@@ -118,6 +120,10 @@ namespace WeatherBot.Engine.Controller
             {
                 answer = DatetimeUtils.GetOutofScopeAnswer();
             }
+
+            DateTime endTime = DateTime.Now;
+
+            LogUtils.Log(startTime, endTime, "[Seniverse Service]");
 
             return answer;
         }
@@ -178,7 +184,7 @@ namespace WeatherBot.Engine.Controller
 
         private bool IsLocationOnly(LUInfo luinfo, string utterance)
         {
-            string location = DatetimeUtils.GetLocation(luinfo);
+            string location = DatetimeUtils.GetLocation(luinfo, false);
 
             if (string.IsNullOrWhiteSpace(location))
             {

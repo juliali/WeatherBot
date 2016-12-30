@@ -26,13 +26,13 @@ namespace WBService.Controllers
                .AllKeys
                .Select(key => key + "=" + HttpContext.Current.Request.QueryString[key]).ToArray());
 
-            WBService.Utils.Utils.Log("[Get]:\r\n" + querystr);
+           LogUtils.Log("[Get]:\r\n" + querystr);
 
             int ret = wxcpt.VerifyURL(signature, timestamp, nonce);           
 
             if (ret != 0)
             {
-                WBService.Utils.Utils.Log("Error: Verify failed: " + ret.ToString());
+                LogUtils.Log("Error: Verify failed: " + ret.ToString());
                 throw new WebResponseException(HttpStatusCode.InternalServerError, $"VerifyURL failed: {ret}");                
             }
             
@@ -52,9 +52,7 @@ namespace WBService.Controllers
                 Response resp = GetResponse(req);
 
                 string str_encrypt = EncryptXML(resp);
-
-                Utils.Utils.Log("[Answer]:" + resp.Content);
-
+                
                 return new HttpResponseMessage(System.Net.HttpStatusCode.OK) { Content = new StringContent(str_encrypt, System.Text.Encoding.UTF8, "text/xml") };
 
             }
@@ -67,7 +65,7 @@ namespace WBService.Controllers
         private Request ParseRequest(HttpRequestMessage request)
         {
             string requestXml =  request.Content.ReadAsStringAsync().Result;
-            Utils.Utils.Log("[POST input]:\r\n" + requestXml);
+            LogUtils.Log("[POST input]:\r\n" + requestXml);
             Request req = new Request();
 
             XmlDocument doc = new XmlDocument();
@@ -85,13 +83,9 @@ namespace WBService.Controllers
                 req.MsgId = root["MsgId"].InnerText;
 
 
-                if (req.MsgType == "text")
-                {
-                    Utils.Utils.Log("[Question]:" + req.Content);
-                }
-                else
-                {
-                    Utils.Utils.Log("[Request XML Doc]:\r\n" + requestXml);
+                if (req.MsgType != "text")
+                {                   
+                    LogUtils.Log("[Request XML Doc]:\r\n" + requestXml);
                 }
 
                 if (req.ToUserName == null || req.MsgId == null || req.Content == null)
@@ -113,13 +107,14 @@ namespace WBService.Controllers
 
             if (req.MsgType == "text")
             {
+                LogUtils.Log("[UserId]:" + req.FromUserName);
+                LogUtils.Log("[Question]:" + req.Content);
+
                 DateTime startTime = DateTime.Now;
                 replyMsg = Answer(req.FromUserName, req.Content);
                 DateTime endTime = DateTime.Now;
 
-                TimeSpan latency = endTime.Subtract(startTime);
-                double ms = latency.TotalMilliseconds;
-                Utils.Utils.Log("[Weather Engine Latency] It took " + ms.ToString() + " MS to get answer.");
+                LogUtils.Log(startTime, endTime, "[Weather Engine Latency]");
             }
 
             Response resp = new Response();
@@ -128,7 +123,8 @@ namespace WBService.Controllers
             resp.CreateTime = DateTime.Now.Ticks.ToString();
             resp.MsgType = req.MsgType;
             resp.Content = req.MsgType == "text"?replyMsg:"";
-            
+
+            LogUtils.Log("[Answer]:" + resp.Content);
             return resp;
         }
 
@@ -155,7 +151,7 @@ namespace WBService.Controllers
             sEncryptMsg += ContentLabelHead + resp.Content + ContentLabelTail;
             sEncryptMsg += "</xml>";
 
-            Utils.Utils.Log("[POST output]:\r\n" + sEncryptMsg);
+            LogUtils.Log("[POST output]:\r\n" + sEncryptMsg);
             return sEncryptMsg;
         }
 

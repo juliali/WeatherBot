@@ -1,30 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeatherBot.Engine.Data;
 using WeatherBot.Engine.LUEngine.Luis;
 using WeatherBot.Engine.LUEngines.RulebasedEngine;
+using WeatherBot.Engine.Utils;
 
 namespace WeatherBot.Engine.LUEngines
 {
     public class LUController
     {
         private LuisClient luisClient = new LuisClient();
-        
-        private RulebasedExtractor LocationExtractor = new RulebasedExtractor("WeatherBot.Engine.Res.ChineseCities.txt");
 
-        private RulebasedIntentClassifier LocationIC = new RulebasedIntentClassifier("WeatherBot.Engine.Res.IntentRules.txt");
-
-        private RulebasedPreprocessor preprocessor = new RulebasedPreprocessor("WeatherBot.Engine.Res.Preprocess_replacewords.txt");
+        private static RuleTextStore ruleStore = RuleTextStore.Instance;
+     
         public LUInfo Understand(string utterance)
         {
-            string newUtterance = preprocessor.Preprocess(utterance);
+            DateTime startTime = DateTime.Now;
+            string newUtterance = ruleStore.Preprocess(utterance);
 
-            LUInfo info = this.luisClient.Query(newUtterance); // the preprocess is for luis only
+            LUInfo info = this.luisClient.Query(newUtterance); 
 
-            string ruleBasedIntent = LocationIC.GetCategory(utterance);
+            string ruleBasedIntent = ruleStore.DetermineIntent(utterance);
 
             if (!string.IsNullOrWhiteSpace(ruleBasedIntent))
             {
@@ -32,13 +28,16 @@ namespace WeatherBot.Engine.LUEngines
                 info.Intent.score = 1;
             }
 
-            List<Entity> rulebasedEntities = LocationExtractor.Extract(utterance);                    
+            List<Entity> rulebasedEntities = ruleStore.ExtractSlot(utterance);              
                    
             if (rulebasedEntities.Count > 0)
             {
                 info.EntityList.AddRange(rulebasedEntities);
             }
 
+            DateTime endTime = DateTime.Now;
+
+            LogUtils.Log(startTime, endTime, "[LU Service]");
             return info;
         }
     }

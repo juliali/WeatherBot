@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Common\APIClient.cs" />
     <Compile Include="Common\ContextStore.cs" />
+    <Compile Include="LUEngines\RulebasedEngine\RuleTextStore.cs" />
     <Compile Include="Controller\CarWashingSrv.cs" />
     <Compile Include="Controller\IntentSrv.cs" />
     <Compile Include="Controller\ClothSrv.cs" />
@@ -62,10 +63,7 @@
     <Compile Include="LUEngines\LUController.cs" />
     <Compile Include="LUEngines\Luis\LuisClient.cs" />
     <Compile Include="LUEngines\Luis\QueryResult.cs" />
-    <Compile Include="LUEngines\RulebasedEngine\RulebasedPreprocessor.cs" />
-    <Compile Include="LUEngines\RulebasedEngine\RulebasedIntentClassifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LUEngines\RulebasedEngine\RulebasedExtractor.cs" />
     <Compile Include="Seniverse\SeniverseClient.cs" />
     <Compile Include="Seniverse\SeniverseLivingClient.cs" />
     <Compile Include="Seniverse\SeniverseRestrictedDrivingClient.cs" />
@@ -73,6 +71,7 @@
     <Compile Include="Seniverse\SeniverseWeatherClient.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\DatetimeUtils.cs" />
+    <Compile Include="Utils\LogUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Res\ChineseCities.txt">
